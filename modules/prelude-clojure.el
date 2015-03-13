@@ -1,9 +1,9 @@
 ;;; prelude-clojure.el --- Emacs Prelude: Clojure programming configuration.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: http://batsov.com/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -33,18 +33,33 @@
 ;;; Code:
 
 (require 'prelude-lisp)
+(prelude-require-packages '(clojure-mode cider))
 
-;; To start SLIME in your Clojure project:
-;; 1. lein plugin install swank-clojure 1.3.1
-;; 2. Invoke M-x clojure-jack-in from a project
-(require 'clojure-mode)
+(eval-after-load 'clojure-mode
+  '(progn
+     (defun prelude-clojure-mode-defaults ()
+       (subword-mode +1)
+       (run-hooks 'prelude-lisp-coding-hook))
 
-(defun prelude-clojure-mode-defaults ()
-  (run-hooks 'prelude-lisp-coding-hook))
+     (setq prelude-clojure-mode-hook 'prelude-clojure-mode-defaults)
 
-(setq prelude-clojure-mode-hook 'prelude-clojure-mode-defaults)
+     (add-hook 'clojure-mode-hook (lambda ()
+                                    (run-hooks 'prelude-clojure-mode-hook)))))
 
-(add-hook 'clojure-mode-hook (lambda () (run-hooks 'prelude-clojure-mode-hook)))
+(eval-after-load 'cider
+  '(progn
+     (setq nrepl-log-messages t)
+
+     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+     (defun prelude-cider-repl-mode-defaults ()
+       (subword-mode +1)
+       (run-hooks 'prelude-interactive-lisp-coding-hook))
+
+     (setq prelude-cider-repl-mode-hook 'prelude-cider-repl-mode-defaults)
+
+     (add-hook 'cider-repl-mode-hook (lambda ()
+                                       (run-hooks 'prelude-cider-repl-mode-hook)))))
 
 (provide 'prelude-clojure)
 

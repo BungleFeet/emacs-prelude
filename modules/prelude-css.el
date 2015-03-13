@@ -1,9 +1,9 @@
-;;; prelude-org.el --- Emacs Prelude: org-mode configuration.
+;;; prelude-css.el --- Emacs Prelude: css support
 ;;
 ;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
-;; URL: https://github.com/bbatsov/prelude
+;; URL: http://www.batsov.com/emacs-prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -11,7 +11,7 @@
 
 ;;; Commentary:
 
-;; Some basic configuration for org-mode.
+;; Some basic configuration for css-mode.
 
 ;;; License:
 
@@ -32,26 +32,20 @@
 
 ;;; Code:
 
-(add-to-list 'auto-mode-alist '("\\.org\\’" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-(setq org-log-done t)
+(eval-after-load 'css-mode
+  '(progn
+     (prelude-require-packages '(rainbow-mode))
 
-(defun prelude-org-mode-defaults ()
-  (let ((oldmap (cdr (assoc 'prelude-mode minor-mode-map-alist)))
-        (newmap (make-sparse-keymap)))
-    (set-keymap-parent newmap oldmap)
-    (define-key newmap (kbd "C-c +") nil)
-    (define-key newmap (kbd "C-c -") nil)
-    (make-local-variable 'minor-mode-overriding-map-alist)
-    (push `(prelude-mode . ,newmap) minor-mode-overriding-map-alist))
-)
+     (setq css-indent-offset 2)
 
-(setq prelude-org-mode-hook 'prelude-org-mode-defaults)
+     (defun prelude-css-mode-defaults ()
+       (rainbow-mode +1)
+       (run-hooks 'prelude-prog-mode-hook))
 
-(add-hook 'org-mode-hook (lambda () (run-hooks 'prelude-org-mode-hook)))
+     (setq prelude-css-mode-hook 'prelude-css-mode-defaults)
 
-(provide 'prelude-org)
+     (add-hook 'css-mode-hook (lambda ()
+                                (run-hooks 'prelude-css-mode-hook)))))
 
-;;; prelude-org.el ends here
+(provide 'prelude-css)
+;;; prelude-css.el ends here

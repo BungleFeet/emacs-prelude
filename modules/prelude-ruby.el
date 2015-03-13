@@ -1,9 +1,9 @@
 ;;; prelude-ruby.el --- Emacs Prelude: A nice setup for Ruby (and Rails) devs.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -32,68 +32,46 @@
 
 ;;; Code:
 
+(require 'prelude-programming)
+
+(prelude-require-packages '(ruby-tools inf-ruby yari))
+
 ;; Rake files are ruby, too, as are gemspecs, rackup files, and gemfiles.
-(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.ru$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Guardfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rabl\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Thorfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Podfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.podspec\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Puppetfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Berksfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Appraisals\\'" . ruby-mode))
 
 ;; We never want to edit Rubinius bytecode
 (add-to-list 'completion-ignored-extensions ".rbc")
 
-(autoload 'run-ruby "inf-ruby"
-  "Run an inferior Ruby process")
-(autoload 'inf-ruby-keys "inf-ruby"
-  "Set local key defs for inf-ruby in ruby-mode")
+(define-key 'help-command (kbd "R") 'yari)
 
-;; yari provides a nice Emacs interface to ri
-(require 'yari)
+(eval-after-load 'ruby-mode
+  '(progn
+     (defun prelude-ruby-mode-defaults ()
+       (inf-ruby-minor-mode +1)
+       (ruby-tools-mode +1)
+       ;; CamelCase aware editing operations
+       (subword-mode +1))
 
-;; yaml-mode
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+     (setq prelude-ruby-mode-hook 'prelude-ruby-mode-defaults)
 
-; TODO fix ruby-end and package ruby-block for marmalade
-(require 'ruby-block)
-(require 'ruby-end)
-
-(defun prelude-ruby-mode-defaults ()
-  (inf-ruby-keys)
-  ;; turn off the annoying input echo in irb
-  (setq comint-process-echoes t)
-  (ruby-block-mode t)
-  (local-set-key (kbd "C-h r") 'yari))
-
-(setq prelude-ruby-mode-hook 'prelude-ruby-mode-defaults)
-
-(add-hook 'ruby-mode-hook (lambda () (run-hooks 'prelude-ruby-mode-hook)))
-
-(require 'haml-mode)
-(require 'scss-mode)
-
-(defun prelude-css-mode-defaults ()
-  (setq css-indent-offset 2)
-  (rainbow-mode +1))
-
-(setq prelude-css-mode-hook 'prelude-css-mode-defaults)
-
-(add-hook 'css-mode-hook (lambda () (run-hooks 'prelude-css-mode-hook)))
-
-(defun prelude-scss-mode-defaults ()
-  (prelude-css-mode-hook)
-  ;; turn off annoying auto-compile on save
-  (setq scss-compile-at-save nil))
-
-(setq prelude-scss-mode-hook 'prelude-scss-mode-defaults)
-
-(add-hook 'scss-mode-hook (lambda () (run-hooks 'prelude-scss-mode-hook)))
-
-;; cucumber support
-(require 'feature-mode)
-(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+     (add-hook 'ruby-mode-hook (lambda ()
+                                 (run-hooks 'prelude-ruby-mode-hook)))))
 
 (provide 'prelude-ruby)
-
 ;;; prelude-ruby.el ends here

@@ -1,9 +1,9 @@
 ;;; prelude-c.el --- Emacs Prelude: cc-mode configuration.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -32,23 +32,28 @@
 
 ;;; Code:
 
+(require 'prelude-programming)
+
 (defun prelude-c-mode-common-defaults ()
-  (setq indent-tabs-mode t)
-  (setq c-basic-offset 4))
+  (setq c-default-style "k&r"
+        c-basic-offset 4)
+  (c-set-offset 'substatement-open 0))
 
 (setq prelude-c-mode-common-hook 'prelude-c-mode-common-defaults)
 
 ;; this will affect all modes derived from cc-mode, like
 ;; java-mode, php-mode, etc
-(add-hook 'c-mode-common-hook (lambda () (run-hooks 'prelude-c-mode-common-hook)))
+(add-hook 'c-mode-common-hook (lambda ()
+                                (run-hooks 'prelude-c-mode-common-hook)))
 
 (defun prelude-makefile-mode-defaults ()
-  (setq indent-tabs-mode t))
+  (whitespace-toggle-options '(tabs))
+  (setq indent-tabs-mode t ))
 
 (setq prelude-makefile-mode-hook 'prelude-makefile-mode-defaults)
 
-(add-hook 'makefile-mode-hook (lambda () (run-hooks 'prelude-makefile-mode-hook)))
-
+(add-hook 'makefile-mode-hook (lambda ()
+                                (run-hooks 'prelude-makefile-mode-hook)))
 (provide 'prelude-c)
 
 ;;; prelude-c.el ends here

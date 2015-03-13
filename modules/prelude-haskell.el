@@ -1,9 +1,9 @@
 ;;; prelude-haskell.el --- Emacs Prelude: Nice config for Haskell programming.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -32,15 +32,21 @@
 
 ;;; Code:
 
-(defun prelude-haskell-mode-defaults ()
-  (run-hooks 'prelude-prog-mode-hook) ;; run manually; not derived from prog-mode
-  (subword-mode +1)
-  (turn-on-haskell-doc-mode)
-  (turn-on-haskell-indentation))
+(require 'prelude-programming)
+(prelude-require-packages '(haskell-mode))
 
-(setq prelude-haskell-mode-hook 'prelude-haskell-mode-defaults)
+(eval-after-load 'haskell-mode
+  '(progn
+     (defun prelude-haskell-mode-defaults ()
+       (subword-mode +1)
+       (turn-on-haskell-doc-mode)
+       (turn-on-haskell-indentation)
+       (interactive-haskell-mode +1))
 
-(add-hook 'haskell-mode-hook (lambda () (run-hooks 'prelude-haskell-mode-hook)))
+     (setq prelude-haskell-mode-hook 'prelude-haskell-mode-defaults)
+
+     (add-hook 'haskell-mode-hook (lambda ()
+                                    (run-hooks 'prelude-haskell-mode-hook)))))
 
 (provide 'prelude-haskell)
 

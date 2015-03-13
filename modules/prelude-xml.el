@@ -1,9 +1,9 @@
 ;;; prelude-xml.el --- Emacs Prelude: XML editing configuration.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -31,6 +31,8 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
+
+(require 'nxml-mode)
 
 (push '("<\\?xml" . nxml-mode) magic-mode-alist)
 

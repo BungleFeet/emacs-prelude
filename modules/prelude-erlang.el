@@ -1,6 +1,6 @@
 ;;; prelude-erlang.el --- Emacs Prelude: Erlang programming support.
 ;;
-;; Copyright (c) 2011 Gleb Peregud
+;; Copyright © 2011-2015 Gleb Peregud
 ;;
 ;; Author: Gleb Peregud <gleber.p@gmail.com>
 ;; Version: 1.0.0
@@ -31,11 +31,16 @@
 
 ;;; Code:
 
+(require 'prelude-programming)
+(prelude-require-packages '(erlang))
+
 (defcustom wrangler-path nil
-  "*The location of wrangler elisp directory"
+  "The location of wrangler elisp directory."
   :group 'prelude-erlang
   :type 'string
   :safe 'stringp)
+
+(require 'projectile)
 
 (when (require 'erlang-start nil t)
 
@@ -47,24 +52,8 @@
     (add-to-list 'load-path wrangler-path)
     (require 'wrangler)))
 
-(defun erlang-rebar-compile ()
-  (interactive)
-  (let* ((dir (or (projectile-get-project-root)
-                  (file-name-directory (buffer-file-name))))
-         (pref (concat "cd " dir " && "))
-         (cmd (cond ((file-exists-p (expand-file-name "rebar" dir))    "./rebar compile")
-                    ((executable-find "rebar")                         "rebar compile")
-                    ((file-exists-p (expand-file-name "Makefile" dir)) "Makefile")
-                    (t nil))))
-    (if cmd
-        (compilation-start (concat pref cmd))
-      (call-interactively 'inferior-erlang-compile))
-    ))
-
 (add-hook 'erlang-mode-hook (lambda ()
-                              (make-variable-buffer-local 'projectile-project-root-files)
-                              (setq projectile-project-root-files '("rebar.config" ".git" ".hg" ".bzr" ".projectile"))
-                              (setq erlang-compile-function 'erlang-rebar-compile)))
+                              (setq erlang-compile-function 'projectile-compile-project)))
 
 (provide 'prelude-erlang)
 

@@ -1,4 +1,5 @@
 *~
+*.elc
 auto-save-list
 recentf
 savehist
@@ -7,7 +8,16 @@ eshell
 elpa
 el-get
 semanticdb
-custom.el
 url
-personal/*.el
 ede-projects.el
+.DS_Store
+custom.el
+places
+.smex-items
+savefile/
+/prelude-modules.el
+projectile-bookmarks.eld
+session*
+.cask
+tramp
+/var/pcache

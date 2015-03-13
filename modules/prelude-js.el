@@ -1,9 +1,9 @@
 ;;; prelude-js.el --- Emacs Prelude: js-mode configuration.
 ;;
-;; Copyright (c) 2011 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/Prelude
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
 ;; Version: 1.0.0
 ;; Keywords: convenience
 
@@ -32,13 +32,26 @@
 
 ;;; Code:
 
-(defun prelude-js-mode-defaults ()
-  ;; electric-layout-mode doesn't play nice with js-mode
-  (electric-layout-mode -1))
+(require 'prelude-programming)
+(prelude-require-packages '(js2-mode json-mode))
 
-(setq prelude-js-mode-hook 'prelude-js-mode-defaults)
+(require 'js2-mode)
 
-(add-hook 'js-mode-hook (lambda () (run-hooks 'prelude-js-mode-hook)))
+(add-to-list 'auto-mode-alist '("\\.js\\'"    . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.pac\\'"   . js2-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
+(eval-after-load 'js2-mode
+  '(progn
+     (defun prelude-js-mode-defaults ()
+       ;; electric-layout-mode doesn't play nice with smartparens
+       (setq-local electric-layout-rules '((?\; . after)))
+       (setq mode-name "JS2")
+       (js2-imenu-extras-mode +1))
+
+     (setq prelude-js-mode-hook 'prelude-js-mode-defaults)
+
+     (add-hook 'js2-mode-hook (lambda () (run-hooks 'prelude-js-mode-hook)))))
 
 (provide 'prelude-js)
 

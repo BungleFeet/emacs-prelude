@@ -1,17 +1,16 @@
-;;; prelude-scheme.el --- Emacs Prelude: Some defaults for Scheme.
+;;; prelude-elixir.el --- Emacs Prelude: Elixir programming support.
 ;;
-;; Copyright © 2011-2015 Bozhidar Batsov
+;; Copyright © 2014-2015 Samuel Tonini
 ;;
-;; Author: Bozhidar Batsov <bozhidar@batsov.com>
-;; URL: https://github.com/bbatsov/prelude
+;; Author: Samuel Tonini <tonini.samuel@gmail.com>
 ;; Version: 1.0.0
-;; Keywords: convenience
+;; Keywords: convenience elixir
 
 ;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
 
-;; Some basic configuration for Scheme programming.
+;; Some basic configuration for Elixir development.
 
 ;;; License:
 
@@ -31,20 +30,11 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
-(prelude-require-package 'geiser)
 
-(require 'prelude-lisp)
-(require 'geiser)
+(require 'prelude-programming)
 
-;; geiser replies on a REPL to provide autodoc and completion
-(setq geiser-mode-start-repl-p t)
+(prelude-require-packages '(elixir-mode alchemist))
 
-;; keep the home clean
-(setq geiser-repl-history-filename
-      (expand-file-name "geiser-history" prelude-savefile-dir))
+(provide 'prelude-elixir)
 
-(add-hook 'scheme-mode-hook (lambda () (run-hooks 'prelude-lisp-coding-hook)))
-
-(provide 'prelude-scheme)
-
-;;; prelude-scheme.el ends here
+;;; prelude-elixir.el ends here
