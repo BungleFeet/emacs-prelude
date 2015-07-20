@@ -35,3 +35,19 @@
       helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-ff-file-name-history-use-recentf t)
+
+
+;; Set up code folding for XML documents - use C-c h to toggle show/hide
+(require 'hideshow)
+(require 'sgml-mode)
+(require 'nxml-mode)
+(add-to-list 'hs-special-modes-alist
+             '(nxml-mode
+               "<!--\\|<[^/>]*[^/]>"
+               "-->\\|</[^/>]*[^/]>"
+
+               "<!--"
+               sgml-skip-tag-forward
+               nil))
+(add-hook 'nxml-mode-hook 'hs-minor-mode)
+(define-key nxml-mode-map (kbd "C-c h") 'hs-toggle-hiding)
