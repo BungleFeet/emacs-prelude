@@ -15,7 +15,22 @@
  )
 
 ;; Load my favourite packages
-(prelude-require-packages '(key-chord company rainbow-delimiters anzu avy dash  makey discover-my-major flycheck let-alist pkg-info epl helm helm-core async helm-ag helm-projectile projectile  magit magit-popup git-commit with-editor smartparens ace-jump-buffer ace-jump-mode ace-window browse-kill-ring cider spinner queue clojure-mode csv-mode diff-hl diminish easy-kill expand-region flx-ido flx flycheck gist gh logito pcache git-timemachine gitconfig-mode gitignore-mode god-mode grizzl guru-mode  helm-descbinds move-text operate-on-number ov pcache queue smartrep smex undo-tree volatile-highlights zenburn-theme zop-to-char))
+(prelude-require-packages '(let-alist key-chord company rainbow-delimiters anzu
+                                      avy dash makey discover-my-major flycheck
+                                      pkg-info epl helm helm-core async helm-ag
+                                      helm-projectile projectile  magit
+                                      magit-popup git-commit with-editor
+                                      smartparens ace-jump-buffer ace-jump-mode
+                                      ace-window browse-kill-ring cider spinner
+                                      queue clojure-mode csv-mode diff-hl
+                                      diminish easy-kill expand-region
+                                      flx-ido flx flycheck gist gh logito pcache
+                                      git-timemachine gitconfig-mode
+                                      gitignore-mode god-mode grizzl guru-mode
+                                      helm-descbinds move-text operate-on-number
+                                      ov pcache queue smartrep smex undo-tree
+                                      volatile-highlights zenburn-theme
+                                      zop-to-char))
 
 ;; Helm setup
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
