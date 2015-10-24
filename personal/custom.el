@@ -102,3 +102,7 @@
 (require 'smartparens-config)
 (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+
+;; Add cygwin bin directory to execution path
+(if (file-directory-p "c:/cygwin64/bin")
+    (add-to-list 'exec-path "c:/cygwin64/bin"))
