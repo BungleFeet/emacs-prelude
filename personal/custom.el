@@ -9,6 +9,7 @@
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(debug-on-error t)
+ '(magit-diff-section-arguments (quote ("--ignore-space-change" "--no-ext-diff")))
  '(size-indication-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -91,5 +92,5 @@
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
 
 ;; Add cygwin bin directory to execution path
-(if (file-directory-p "c:/cygwin64/bin")
-    (add-to-list 'exec-path "c:/cygwin64/bin"))
+;; (if (file-directory-p "c:/cygwin64/bin")
+;;     (add-to-list 'exec-path "c:/cygwin64/bin"))
