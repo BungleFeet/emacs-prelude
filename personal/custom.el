@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(dired-listing-switches "-al"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -13,16 +14,25 @@
  ;; If there is more than one, they won't work right.
  )
 
-(defun remove-dos-eol ()
-  "Do not show ^M in files containing mixed UNIX and DOS line endings."
-  (interactive)
-  (setq buffer-display-table (make-display-table))
-  (aset buffer-display-table ?\^M []))
+;; Load my favourite packages
+(prelude-require-packages '(let-alist key-chord company rainbow-delimiters anzu
+                                      avy dash makey discover-my-major flycheck
+                                      pkg-info epl helm helm-core async helm-ag
+                                      helm-projectile projectile  magit
+                                      magit-popup git-commit with-editor
+                                      smartparens ace-jump-buffer ace-jump-mode
+                                      ace-window browse-kill-ring cider spinner
+                                      queue clojure-mode csv-mode diff-hl
+                                      diminish easy-kill expand-region
+                                      flx-ido flx flycheck gist gh logito pcache
+                                      git-timemachine gitconfig-mode
+                                      gitignore-mode god-mode grizzl guru-mode
+                                      helm-descbinds move-text operate-on-number
+                                      ov pcache queue smartrep smex undo-tree
+                                      volatile-highlights zenburn-theme
+                                      zop-to-char))
 
 ;; Helm setup
-(require 'helm)
-(require 'prelude-helm-everywhere)
-
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
@@ -69,3 +79,21 @@
   (setq default-buffer-file-coding-system 'utf-8))
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+;; Prevent emacs from ringing the system bell
+(setq ring-bell-function 'ignore)
+
+;; make PC keyboard's Win key or other to type Super or Hyper, for emacs running on Windows.
+(setq w32-pass-lwindow-to-system nil)
+(setq w32-lwindow-modifier 'super) ; Left Windows key
+
+(setq w32-pass-rwindow-to-system nil)
+(setq w32-rwindow-modifier 'super) ; Right Windows key
+
+(setq w32-pass-apps-to-system nil)
+(setq w32-apps-modifier 'hyper) ; Menu/App key
+
+;; Set up Clojure mode
+(require 'smartparens-config)
+(add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)

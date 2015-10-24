@@ -14,11 +14,10 @@ ede-projects.el
 places
 .smex-items
 savefile/
-/prelude-modules.el
 projectile-bookmarks.eld
 session*
 .cask
 tramp
 /var/pcache
-/server
 *.stackdump
+server/
